@@ -2,6 +2,9 @@
   <div class="home">
     <h1>Adopt a new best friend</h1>
     <h2>Pets on adoption: {{ animalsCount }}</h2>
+    <h3>Cats: {{ getCats }}</h3>
+    <h3>Dogs: {{ getDogs }}</h3>
+
     <button @click="toggleForm" class="btn btn-primary">Add new pet</button>
 
     <b-form @submit.prevent="handleSubmit" v-if="showPetForm">
@@ -20,7 +23,7 @@
         <b-form-select
           id="input-3"
           v-model="formData.species"
-          :options="['cats', 'dogs']"
+          :options="['cat', 'dog']"
           required
         ></b-form-select>
       </b-form-group>
@@ -58,8 +61,15 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'animalsCount'
-    ])
+      'animalsCount',
+      'totalOfSpecies'
+    ]),
+    getDogs () {
+      return this.totalOfSpecies('dog')
+    },
+    getCats () {
+      return this.totalOfSpecies('cat')
+    }
   },
   methods: {
     ...mapActions([
@@ -71,10 +81,10 @@ export default {
     handleSubmit () {
       const { species, name, age } = this.formData
       const payload = {
-        species,
         pet: {
           name,
-          age
+          age,
+          species
         }
       }
       this.addPet(payload)

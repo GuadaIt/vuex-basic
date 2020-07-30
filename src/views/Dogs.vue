@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Dogs for adoption</h1>
-    <b-table striped hover :items="dogs">
+    <b-table striped hover :items="getDogs">
       <template v-slot:cell(name)="data">
         <router-link :to="`pets/dogs/${data.index}`">
          {{ data.value }}
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -20,8 +20,14 @@ export default {
   },
   computed: {
     ...mapState([
-      'dogs'
-    ])
+      'pets'
+    ]),
+    ...mapGetters([
+      'getSpecies'
+    ]),
+    getDogs () {
+      return this.getSpecies('dog')
+    }
   }
 }
 </script>
